@@ -3,16 +3,17 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import ALL_AUTHORS from '../gqlqueries/ALL_AUTHORS'
 import EDIT_AUTHOR from '../gqlqueries/EDIT_AUTHOR'
 
-const EditAuthors = ({ submitHandler }) => {
+const EditAuthors = ({ submitHandler, authors }) => {
 
   return(
   <div>
     <h2>Set Birthday</h2>
     <form onSubmit={submitHandler}>
-      <div>
-        Name: 
-        <input type='text' name='name'/>
-      </div>
+      <select name='selectSlide'>
+      {
+        authors.map(a=> <option value={a} key={a}>{a}</option>)
+      }
+      </select>
       <div>
         Born: 
         <input type='text' name='born'/>
@@ -34,7 +35,7 @@ const Authors = (props) => {
   const submitHandler = event => {
     event.preventDefault()
 
-    const name = event.target.name.value
+    const name = event.target.selectSlide.value
     const setToBorn = Number(event.target.born.value)
 
     editAuthor({
@@ -44,9 +45,6 @@ const Authors = (props) => {
       }
     })
 
-    console.log({name, setToBorn})
-
-    event.target.name.value = ''
     event.target.born.value = ''
   }
 
@@ -78,7 +76,7 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-      <EditAuthors submitHandler={submitHandler} />
+      <EditAuthors submitHandler={submitHandler} authors={authors.map(a=> a.name)} />
     </div>
   )
 }
