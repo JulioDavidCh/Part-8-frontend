@@ -5,7 +5,6 @@ import ALL_BOOKS from '../gqlqueries/ALL_BOOKS'
 const Books = (props) => {
   const {data} = useQuery(ALL_BOOKS)
 
-  console.log(data)
   if (!props.show) {
     return null
   }
