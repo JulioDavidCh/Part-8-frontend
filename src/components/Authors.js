@@ -3,7 +3,9 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import ALL_AUTHORS from '../gqlqueries/ALL_AUTHORS'
 import EDIT_AUTHOR from '../gqlqueries/EDIT_AUTHOR'
 
-const EditAuthors = ({ submitHandler, authors }) => {
+const EditAuthors = ({ submitHandler, authors, ourToken }) => {
+
+  if(!ourToken) return null
 
   return(
   <div>
@@ -24,11 +26,11 @@ const EditAuthors = ({ submitHandler, authors }) => {
   )
 }
 
-const Authors = (props) => {
+const Authors = ({ show, token }) => {
   const {data} = useQuery(ALL_AUTHORS)
   const [editAuthor] = useMutation(EDIT_AUTHOR)
 
-  if (!props.show) {
+  if (!show) {
     return null
   }
 
@@ -76,7 +78,11 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-      <EditAuthors submitHandler={submitHandler} authors={authors.map(a=> a.name)} />
+      <EditAuthors 
+        submitHandler={submitHandler} 
+        authors={authors.map(a=> a.name)}
+        ourToken={token}
+      />
     </div>
   )
 }
