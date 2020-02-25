@@ -1,18 +1,34 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import ALL_BOOKS from '../gqlqueries/ALL_BOOKS'
 
 const Books = (props) => {
   const {data} = useQuery(ALL_BOOKS)
-
-  if (!props.show) {
-    return null
-  }
+  const [currentGenre, setcurrentGenre] = useState('all')
 
   const books =
   data
   ? data.allBooks
   : []
+
+  const booksToShow =
+  currentGenre === 'all'
+  ? books
+  : books.filter(book => book.genres.indexOf(currentGenre) > -1)
+
+  let allGenres = data 
+  ? data.allBooks.reduce((genres, book) => {
+    return [...genres, ...book.genres]
+  },[])
+  : null
+
+  let differentGenres = allGenres
+  ? [...new Set(allGenres)]
+  : null
+
+  if (!props.show) {
+    return null
+  }
 
   return (
     <div>
@@ -29,7 +45,7 @@ const Books = (props) => {
               published
             </th>
           </tr>
-          {books.map(a =>
+          {booksToShow.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author}</td>
@@ -38,6 +54,14 @@ const Books = (props) => {
           )}
         </tbody>
       </table>
+      <div>
+        {
+          differentGenres.map(genre => 
+          <button key={genre} onClick={() => setcurrentGenre(genre)}>
+            {genre}
+          </button>)
+        }
+      </div>
     </div>
   )
 }
