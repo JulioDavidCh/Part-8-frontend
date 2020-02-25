@@ -23,6 +23,13 @@ const App = () => {
           ? null
           : <button onClick={() => setPage('login')}>login</button>
         }
+        {/* {
+          token
+          ? <button>
+              favorites
+            </button>
+          : null
+        } */}
         {
           token
           ? <button onClick={() =>{
