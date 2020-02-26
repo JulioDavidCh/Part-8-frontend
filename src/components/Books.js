@@ -17,9 +17,7 @@ const Books = (props) => {
   : books.filter(book => book.genres.indexOf(currentGenre) > -1)
 
   let allGenres = data 
-  ? data.allBooks.reduce((genres, book) => {
-    return [...genres, ...book.genres]
-  },[])
+  ? data.allBooks.flatMap(book => book.genres)
   : null
 
   let differentGenres = allGenres
