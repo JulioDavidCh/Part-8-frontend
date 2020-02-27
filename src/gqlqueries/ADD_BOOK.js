@@ -1,14 +1,15 @@
 import gql from 'graphql-tag'
 
 const ADD_BOOK = gql`
-  mutation AddBook($title: String!, $author: String!, $published: Int!, $genres: [String]) {
+  mutation addBook($title: String!, $published: Int!, $author: String!, $genres: [String!]!) {
     addBook(
       title: $title,
-      author: $author,
       published: $published,
+      author: $author,
       genres: $genres
     ) {
       title
+      id
     }
   }
 `
