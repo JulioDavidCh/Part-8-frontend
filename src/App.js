@@ -4,10 +4,18 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Login from './components/Login'
 import RecommendedBooks from './components/RecommendedBooks'
+import { useSubscription } from '@apollo/react-hooks'
+import BOOK_ADDED from './gqlqueries/BOOK_ADDED_SUBS'
 
 const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(localStorage.getItem('loggedUser'))
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      window.alert(`${subscriptionData.data.bookAdded.title} was added`)
+    }
+  })
 
   return (
     <div>
